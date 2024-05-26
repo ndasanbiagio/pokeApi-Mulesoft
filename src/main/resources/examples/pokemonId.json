@@ -1,0 +1,13 @@
+{ 	
+"nombre": "pikachu", 	
+"tipo": "electric", 	
+"peso": 60, 	
+"estatura": 4, 	
+"ID": "#0025", 	
+"movimientos": "mega-punch,pay-day,thunder-punch,slam", 	
+"ataque": 55, 	
+"defensa": 40, 	
+"velocidad": 90, 	
+"fecha": "08:30:12 24-2-2024", 	
+"areas": ["trophy-garden-area","kanto-route-2-south-towards-viridian-city"] 
+}

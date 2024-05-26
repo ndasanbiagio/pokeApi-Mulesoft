@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+    xmlns="http://www.mulesoft.org/schema/mule/core"
+    xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+    <http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="0440938a-1421-4d22-964a-37594084bfc8" basePath="/pokedex">
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+
+    <http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="18bda00a-81a1-42bb-a603-b5876f8a5c32" basePath="/api/v2/pokemon/">
+        <http:request-connection host="pokeapi.co" />
+    </http:request-config>
+
+    <flow name="pokedexFlow" doc:id="e02549c3-08fc-410b-b63e-4ad6403005b9">
+        <http:listener doc:name="Listener" doc:id="5b77db39-b135-496a-abc0-8d0d0fb60c30" config-ref="HTTP_Listener_config" path="/api/{id}"/>
+        
+        <logger level="INFO" doc:name="Logger" doc:id="2922eede-804e-4e31-a65d-31352247d92b" message="Request received with ID: #[message.attributes.uriParams.id] or Name: #[message.attributes.queryParams.name]"/>
+        
+        <choice doc:name="Choice">
+            <when expression="#[message.attributes.queryParams.name != null]">
+                <http:request method="GET" doc:name="Request by Name" doc:id="24ead352-94cc-4a3a-b91e-893aca3f9a2d" config-ref="HTTP_Request_configuration" path="#[message.attributes.queryParams.name]"/>
+                <set-variable variableName="apiResponse" value="#[payload]" doc:name="Set Variable"/>
+                <ee:transform doc:name="Transform Message" doc:id="c5c4a284-d724-4c4e-abc8-cde357f1210b">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+    nombre: payload.forms[0].name,
+    tipo: payload.types."type".name,
+    peso: payload.weight,
+    estatura: payload.height,
+    ID: "#" ++ payload.id as String {format: "0000"},
+    movimientos: payload.moves map ((move) -> move.move.name) joinBy ",",
+    ataque: flatten(payload.stats filter ((item) -> item.stat.name == "attack")).base_stat[0],
+    defensa: flatten(payload.stats filter ((item) -> item.stat.name == "defense")).base_stat[0],
+    velocidad: flatten(payload.stats filter ((item) -> item.stat.name == "speed")).base_stat[0],
+    fecha: now() as String {format: "HH:mm:ss dd-MM-yyyy"},
+	areas: payload.location_area_encounters
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </when>
+            <when expression="#[message.attributes.uriParams.id != null]">
+                <http:request method="GET" doc:name="Request by ID" doc:id="fe0b0dfa-ba0d-45c0-ba85-2446aae14621" config-ref="HTTP_Request_configuration" path="#[message.attributes.uriParams.id]"/>
+                <set-variable variableName="apiResponse" value="#[payload]" doc:name="Set Variable"/>
+                <ee:transform doc:name="Transform Message" doc:id="db0753f6-376e-47b2-8231-d4f5dcbdce58">
+                    <ee:message>
+                        <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+---
+{
+    nombre: payload.forms[0].name,
+    tipo: payload.types."type".name,
+    peso: payload.weight,
+    estatura: payload.height,
+    ID: "#" ++ payload.id as String {format: "0000"},
+    movimientos: payload.moves map ((move) -> move.move.name) joinBy ",",
+    ataque: flatten(payload.stats filter ((item) -> item.stat.name == "attack")).base_stat[0],
+    defensa: flatten(payload.stats filter ((item) -> item.stat.name == "defense")).base_stat[0],
+    velocidad: flatten(payload.stats filter ((item) -> item.stat.name == "speed")).base_stat[0],
+    fecha: now() as String {format: "HH:mm:ss dd-MM-yyyy"},
+	areas: payload.location_area_encounters
+}]]></ee:set-payload>
+                    </ee:message>
+                </ee:transform>
+            </when>
+            <otherwise>
+                <logger level="WARN" doc:name="Logger - Missing Parameter" doc:id="0a97bd58-83e6-4e5c-9c5a-b5abd78074e2" message="Missing 'name' query parameter or 'id' URI parameter"/>
+            </otherwise>
+        </choice>
+    </flow>
+</mule>
