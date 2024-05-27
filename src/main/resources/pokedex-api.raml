@@ -1,0 +1,40 @@
+#%RAML 1.0
+title: Pokedex API
+version: v1
+baseUri: http://localhost:8081/pokedex
+
+types:
+  Pokemon:
+    type: object
+    properties:
+      nombre: string
+      tipo: string
+      peso: integer
+      estatura: integer
+      ID: string
+      movimientos: string
+      ataque: integer
+      defensa: integer
+      velocidad: integer
+      fecha: string
+      areas: string[]
+
+/api:
+  get:
+    queryParameters:
+      name:
+        description: El nombre del Pokemon
+        type: string
+    responses:
+      200:
+        body:
+          application/json:
+            type: Pokemon
+  /{id}:
+    get:
+      description: Obtener detalles del Pokemon por ID
+      responses:
+        200:
+          body:
+            application/json:
+              type: Pokemon

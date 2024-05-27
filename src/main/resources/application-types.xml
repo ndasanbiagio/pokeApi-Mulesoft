@@ -270,4 +270,114 @@ type toJsonId = {|
       </types:output-event>
     </types:processor-declaration>
   </types:enrichment>
+  <types:enrichment select="#7b9e1359-d19b-4206-acfe-e2a1e13ef78c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="responseApi"/>
+        </types:message>
+      </types:input-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d58c7a98-c764-4505-9a3d-0cc4dfdb4203">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="responseApi"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="toJsonName"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#c1d9ea5d-45c1-404f-97ea-e924cd041913">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="responseApi"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="toJsonName"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#5ae33d57-23e5-436c-a340-1e8cd34476e3">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="responseApi"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="toJsonId"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#d5e32440-6d34-498f-8118-4e3e8b72dcd1">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="responseApi"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="toJsonName"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#1575d009-a2cb-445f-9f22-0318cf815e0c">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="responseApi"/>
+        </types:message>
+        <types:variables>
+          <types:variable name="apiResponse" type="responseApi"/>
+        </types:variables>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="toJsonId"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#3e599b42-38fb-4922-92a5-aa63756e2e28">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="responseApi"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="toJsonName"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#677df29d-cdbf-44e3-8848-dad056a552e8">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="responseApi"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="toJsonId"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
 </types:mule>
